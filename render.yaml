@@ -1,0 +1,25 @@
+# Render Blueprint: New > Blueprint > pick this repo.
+# Free plan: the service sleeps after ~15 min idle and the SQLite file resets on every
+# deploy/restart (the database is re-seeded automatically). Open the site a few minutes
+# before presenting so it is awake.
+services:
+  - type: web
+    name: car-commerce
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /up
+    envVars:
+      - key: APP_NAME
+        value: Car Commerce
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: SEED_ADMIN_EMAIL
+        sync: false
+      - key: SEED_ADMIN_PASSWORD
+        sync: false
