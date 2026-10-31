@@ -20,6 +20,14 @@ RUN npm run build
 FROM dunglas/frankenphp:1-php8.4-bookworm
 RUN install-php-extensions pdo_sqlite intl zip bcmath opcache pcntl
 
+# The image grants the frankenphp binary cap_net_bind_service (file capability).
+# Hosts that run containers with restricted capabilities (Render) refuse to exec
+# such binaries -> exit 126. We listen on $PORT (>1024), so strip the capability:
+# a plain copy does not carry the security xattr.
+RUN cp /usr/local/bin/frankenphp /tmp/frankenphp \
+ && mv /tmp/frankenphp /usr/local/bin/frankenphp \
+ && chmod 755 /usr/local/bin/frankenphp
+
 WORKDIR /app
 COPY . .
 COPY --from=vendor /app/vendor ./vendor
@@ -42,4 +50,4 @@ ENV APP_ENV=production \
     PORT=8080
 
 EXPOSE 8080
-CMD ["/app/docker/start.sh"]
+CMD ["sh", "/app/docker/start.sh"]

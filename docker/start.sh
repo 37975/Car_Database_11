@@ -3,6 +3,7 @@
 # Creates the SQLite database on first boot, migrates, seeds once, then serves the app.
 set -e
 cd /app
+echo "[start] user=$(id -u) php=$(php -r 'echo PHP_VERSION;') port=${PORT:-8080}"
 
 # Render gives a random string from `generateValue`; Laravel needs a 32-byte "base64:" key.
 # Derive a stable key from whatever was provided so restarts keep sessions valid.
@@ -28,6 +29,7 @@ if [ ! -f "$DB_FILE" ]; then
     FRESH=1
 fi
 
+echo "[start] migrating $DB_DATABASE"
 php artisan migrate --force --no-interaction
 if [ "$FRESH" = "1" ]; then
     echo "New database: seeding tiers, admin, brands, categories and cars."
@@ -37,4 +39,5 @@ fi
 php artisan storage:link --no-interaction >/dev/null 2>&1 || true
 php artisan optimize --no-interaction
 
+echo "[start] launching FrankenPHP on :${PORT:-8080}"
 exec frankenphp php-server --root /app/public --listen ":${PORT:-8080}"
