@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminLogController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DatabaseController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\TierController;
@@ -40,4 +41,11 @@ Route::middleware(['auth', 'role:admin'])
             AdminLogController::class,
             'index',
         ])->name('logs.index');
+
+        // Read-only database viewer (tables, structure, rows, SQL console)
+        Route::get('database', [DatabaseController::class, 'index'])->name('database.index');
+        Route::match(['get', 'post'], 'database/query', [DatabaseController::class, 'query'])->name('database.query');
+        Route::get('database/{table}', [DatabaseController::class, 'show'])
+            ->where('table', '[A-Za-z_]+')
+            ->name('database.show');
     });

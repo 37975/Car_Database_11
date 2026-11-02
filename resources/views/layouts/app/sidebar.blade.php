@@ -136,6 +136,15 @@
                 >
                     Activity Log
                 </flux:sidebar.item>
+
+                <flux:sidebar.item
+                    icon="circle-stack"
+                    :href="route('admin.database.index')"
+                    :current="request()->routeIs('admin.database.*')"
+                    :class="$navItem . ' ' . $active('admin.database.*')"
+                >
+                    Database
+                </flux:sidebar.item>
             </flux:sidebar.nav>
 
         

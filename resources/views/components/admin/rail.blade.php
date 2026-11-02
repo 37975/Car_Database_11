@@ -18,6 +18,7 @@
         ['label' => 'Membership Tiers', 'icon' => 'trophy',                  'route' => 'admin.tiers.index',      'match' => 'admin.tiers.*'],
         ['label' => 'Reviews',          'icon' => 'star',                    'route' => 'admin.reviews.index',    'match' => 'admin.reviews.*'],
         ['label' => 'Activity Log',     'icon' => 'document-text',           'route' => 'admin.logs.index',       'match' => 'admin.logs.*'],
+        ['label' => 'Database',         'icon' => 'circle-stack',            'route' => 'admin.database.index',   'match' => 'admin.database.*'],
     ];
 
     // Each entry: a fixed 40px square slot; the "pill" inside grows to the right on hover/focus.
